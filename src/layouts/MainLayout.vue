@@ -47,9 +47,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue';
+import EssentialLink from 'components/EssentialLink.vue';
 
-const essentialLinks: EssentialLinkProps[] = [
+const essentialLinks = [
   {
     title: 'Docs',
     caption: 'quasar.dev',

@@ -2,8 +2,11 @@ import { Client } from 'appwrite';
 
 const client = new Client();
 
+const endpoint = process.env.PROJECT_ENDPOINT;
+const projectId = process.env.PROJECT_ID;
+
 client
-  .setEndpoint(process.env.VUE_APP_ENDPOINT)
-  .setProject(process.env.VUE_APP_PROJECT_ID)
+  .setEndpoint(endpoint)
+  .setProject(projectId);
 
 export default client;
