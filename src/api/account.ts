@@ -1,6 +1,6 @@
 import { Account, ID } from 'appwrite';
 import client from 'root/appwrite.js';
-import { ICredintales } from 'types/api/account';
+import { ICredintales } from '@/types/api/account';
 
 export const account = new Account(client);
 

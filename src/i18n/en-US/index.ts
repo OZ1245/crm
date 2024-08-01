@@ -1,7 +1,9 @@
-// This is just an example,
-// so you can safely delete all default props below
+import settings from './settings';
+import layouts from './layouts';
 
 export default {
+  layouts,
+  settings,
   failed: 'Action failed',
   success: 'Action was successful'
 };

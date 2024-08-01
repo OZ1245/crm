@@ -40,3 +40,4 @@ const handleSubmit = (): void => {
   store.register(form);
 }
 </script>
+@/types/api/account

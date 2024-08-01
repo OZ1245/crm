@@ -3,9 +3,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["/src/*"],
+      "@/*": ["./src/*"],
       // "api/*": ["/api/*"]
-      "root/*": ["./*"]
+      "root/*": ["./*"],
+      "stores/*": ["./src/stores/*"]
     }
-  }
+  },
+  "noImplicitAny": true,
 }

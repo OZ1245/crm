@@ -16,6 +16,8 @@ const { configure } = require('quasar/wrappers');
 const path = require('node:path')
 
 module.exports = configure(function (ctx) {
+  require('dotenv').config();
+
   return {
     // https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
     supportTS: {
@@ -85,12 +87,16 @@ module.exports = configure(function (ctx) {
         config.resolve.alias = {
           ...config.resolve.alias,
           '@': path.resolve(__dirname, './src'),
-          api: path.resolve(__dirname, './api'),
+          // api: path.resolve(__dirname, './api'),
           root: path.resolve(__dirname, './'),
         }
       },
 
-      env: require('dotenv').config().parsed
+      env: {
+        PROJECT_ENDPOINT: process.env.PROJECT_ENDPOINT,
+        PROJECT_ID: process.env.PROJECT_ID,
+        PROJECT_SECRET_KEY: process.env.PROJECT_SECRET_KEY
+      }
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
@@ -104,7 +110,9 @@ module.exports = configure(function (ctx) {
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-framework
     framework: {
-      config: {},
+      config: {
+        dark: true
+      },
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack

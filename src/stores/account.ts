@@ -1,17 +1,11 @@
 import { defineStore } from 'pinia';
-import { register } from 'api/account';
-import { ICredintales } from 'types/api/account';
+import { register } from '@/api/account';
+import { ICredintales } from '@/types/api/account';
 
 export const useAccountStore = defineStore('account', {
-  state: () => ({
-    counter: 0
-  }),
+  state: () => ({}),
 
-  getters: {
-    doubleCount (state) {
-      return state.counter * 2;
-    }
-  },
+  getters: {},
 
   actions: {
     register(credintales: ICredintales) {

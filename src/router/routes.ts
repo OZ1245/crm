@@ -13,6 +13,16 @@ const routes: RouteRecordRaw[] = [
         path: '/register',
         component: () => import('pages/auth/CRegister.vue')
       },
+      {
+        path: '/settings',
+        component: () => import('pages/settings/CSettingsPage.vue'),
+        children: [
+          {
+            path: 'users',
+            component: () => import('pages/settings/CUsersPage.vue')
+          }
+        ]
+      },
     ],
   },
 
