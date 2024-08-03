@@ -18,6 +18,7 @@ export default {
       changePassword: 'Update password',
       updatePassword: 'Update password',
       cancel: 'Cancel',
+      logout: 'Log out'
     },
     messages: {
       nameError: 'Error updating name',
@@ -31,6 +32,10 @@ export default {
       nameSuccess: 'Name has been changed',
       emailSuccess: 'Email has been changed',
       passwordSuccess: 'Your password has been changed',
+      logoutDialogTitle: 'Log out',
+      logoutText: 'Are you sure you want to log out of your account?',
+      logoutError: 'Error when logging out of profile',
+      accountDataError: 'Error while retrieving account information'
     }
   },
 }

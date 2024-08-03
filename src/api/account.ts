@@ -16,6 +16,10 @@ const login = async ({ email, password }: ICredintales): Promise<Models.Session>
   return await account.createEmailPasswordSession(email, password);
 }
 
+const logout = async (sessionId: string): Promise<any> => {
+  return await account.deleteSession(sessionId);
+}
+
 const fetchAccount = async (): Promise<Models.User<Models.Preferences>> => {
   return await account.get();
 }
@@ -41,6 +45,7 @@ const updatePassword = async ({ password, oldPassword }: ICredintalesPassword): 
 export default {
   register,
   login,
+  logout,
   fetchAccount,
   updateName,
   updateEmail,

@@ -18,6 +18,7 @@ export default {
       changePassword: 'Изменить пароль',
       updatePassword: 'Обновить пароль',
       cancel: 'Отмена',
+      logout: 'Выйти из профиля'
     },
     messages: {
       nameError: 'Ошибка при обновлении имени',
@@ -31,6 +32,10 @@ export default {
       nameSuccess: 'Имя изменено',
       emailSuccess: 'Email изменён',
       passwordSuccess: 'Пароль изменён',
+      logoutDialogTitle: 'Выход',
+      logoutText: 'Вы уверены, что хотите выйти из профиля?',
+      logoutError: 'Ошибка при выходе из профиля',
+      accountDataError: 'Ошибка при получение данных профиля'
     }
   },
 }

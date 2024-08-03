@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col">
-      <q-list>
+      <q-list separator>
         <q-item>
           <q-item-section>
             <template v-if="!showNameInput">
@@ -100,9 +100,21 @@
 
   <div class="row">
     <div class="col">
-      <q-expansion-item :label="$t('account.detailGeneralInfo')">
-        <pre>{{ account }}</pre>
-      </q-expansion-item>
+      <q-list border>
+        <q-expansion-item :label="$t('account.detailGeneralInfo')">
+          <pre>{{ account }}</pre>
+        </q-expansion-item>
+      </q-list>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <q-btn
+        flat
+        color="negative"
+        @click="handleLogout"
+      >{{ $t('account.general.buttons.logout') }}</q-btn>
     </div>
   </div>
 
@@ -145,8 +157,10 @@
   setup
 >
 import { ref, computed, reactive, nextTick } from 'vue';
+
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 import { useAccountStore } from 'stores/account';
 
@@ -162,8 +176,8 @@ interface IForm {
 const accountStore = useAccountStore();
 const $q = useQuasar();
 const { t } = useI18n();
+const router = useRouter();
 
-const isLoading = ref<boolean>(true);
 const showNameInput = ref<boolean>(false);
 const showEmailInput = ref<boolean>(false);
 const showUpdatePasswordDialog = ref<boolean>(false);
@@ -182,35 +196,45 @@ const account = computed((): Models.User<Models.Preferences> => (
 ));
 
 const fetchAccountData = async (): Promise<void> => {
-  isLoading.value = true;
+  $q.loading.show();
 
   try {
     await accountStore.fetchAccount();
-    isLoading.value = false;
+    $q.loading.hide();
   } catch (error) {
-    throw new Error(`Ошибка при получение данных профиля: ${error}`);
+    $q.loading.hide();
+    $q.notify({
+      icon: 'cancel',
+      type: 'negative',
+      message: `${t('account.general.messages.accountDataError')}: ${error}`
+    })
   }
 }
 
 const updateAccountName = async (): Promise<void> => {
-  isLoading.value = true;
+  $q.loading.show();
 
   try {
     await accountStore.updateName(form.name);
-    isLoading.value = false;
+    $q.loading.hide();
     showNameInput.value = false;
-    $q.notify(t('account.general.messages.nameSuccess'));
-  } catch (error) {
     $q.notify({
+      icon: 'check_circle',
+      type: 'positive',
+      message: t('account.general.messages.nameSuccess')
+    });
+  } catch (error) {
+    $q.loading.hide();
+    $q.notify({
+      icon: 'cancel',
       type: 'negative',
       message: `${t('account.general.messages.nameError')}: ${error}`
     });
-    isLoading.value = false;
   }
 }
 
 const updateAccountEmail = async (): Promise<boolean> => {
-  isLoading.value = true;
+  $q.loading.show();
 
   const { email, password } = form;
 
@@ -219,22 +243,27 @@ const updateAccountEmail = async (): Promise<boolean> => {
       email,
       password
     });
-    isLoading.value = false;
+    $q.loading.hide();
     showEmailInput.value = false;
-    $q.notify(t('account.general.messages.emailSuccess'));
+    $q.notify({
+      icon: 'check_circle',
+      type: 'positive',
+      message: t('account.general.messages.emailSuccess')
+    });
     return true;
   } catch (error) {
+    $q.loading.hide();
     $q.notify({
+      icon: 'cancel',
       type: 'negative',
       message: `${t('account.general.messages.emailError')}: ${error}`
     });
-    isLoading.value = false;
     return false;
   }
 }
 
 const updateAccountPassword = async (): Promise<void> => {
-  isLoading.value = true;
+  $q.loading.show();
 
   const { newPassword: password, password: oldPassword } = form;
 
@@ -243,17 +272,38 @@ const updateAccountPassword = async (): Promise<void> => {
       password,
       oldPassword
     });
-    isLoading.value = false;
+    $q.loading.hide();
     showUpdatePasswordDialog.value = false;
     form.newPassword = '';
     form.password = '';
-    $q.notify(t('account.general.messages.passwordSuccess'));
-  } catch (error) {
     $q.notify({
+      icon: 'check_circle',
+      type: 'positive',
+      message: t('account.general.messages.passwordSuccess')
+    });
+  } catch (error) {
+    $q.loading.hide();
+    $q.notify({
+      icon: 'cancel',
       type: 'negative',
       message: `${t('account.general.messages.passwordError')}: ${error}`
     });
-    isLoading.value = false;
+  }
+}
+
+const logout = async (): Promise<void> => {
+  $q.loading.show();
+
+  try {
+    await accountStore.logout();
+    router.push('/');
+  } catch (error) {
+    $q.loading.hide();
+    $q.notify({
+      icon: 'cancel',
+      type: 'negative',
+      message: `${t('account.general.messages.logoutError')}: ${error}`
+    });
   }
 }
 
@@ -324,6 +374,18 @@ const handleCancelUpdatePassword = (): void => {
   form.password = '';
   form.newPassword = '';
   showUpdatePasswordDialog.value = false;
+}
+
+const handleLogout = (): void => {
+  $q.dialog({
+    title: t('account.general.messages.logoutDialogTitle'),
+    message: t('account.general.messages.logoutText'),
+    cancel: true,
+    persistent: true
+  })
+    .onOk(() => {
+      logout();
+    });
 }
 
 init();

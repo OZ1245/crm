@@ -59,7 +59,7 @@ const account = computed((): Models.User<Models.Preferences> => (
 ));
 
 const computedName = computed((): string => {
-  if (!account.value.name.length) {
+  if (!account.value?.name?.length) {
     return t('account.noName');
   }
 

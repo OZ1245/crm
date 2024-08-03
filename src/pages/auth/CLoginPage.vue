@@ -70,6 +70,7 @@ const handleSubmitForm = async (): Promise<void> => {
   } catch (error) {
     isLoading.value = false;
     $q.notify({
+      icon: 'cancel',
       type: 'negative',
       message: `${t('auth.notifications.loginError')}: ${error}`
     });

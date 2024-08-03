@@ -15,14 +15,14 @@ export const useAccountStore = defineStore('account', {
   }),
 
   getters: {
-    getAccount: (state) => {
+    getAccount: (state): Models.User<Models.Preferences> => {
       const json = localStorage.getItem('account');
       const parsedAccount = json ? JSON.parse(json) : null;
 
       return state.account || parsedAccount || null;
     },
 
-    getAccountSession: (state) => {
+    getAccountSession: (state): Models.Session => {
       const json = localStorage.getItem('accountSession');
       const parsedAccountSession = json ? JSON.parse(json) : null;
 
@@ -43,6 +43,21 @@ export const useAccountStore = defineStore('account', {
 
           return response;
         });
+    },
+
+    logout() {
+      const accountSession = this.getAccountSession;
+
+      return accountApi.logout(accountSession.$id)
+        .then((response) => {
+          this.account = null;
+          this.session = null;
+
+          localStorage.removeItem('account');
+          localStorage.removeItem('accountSession');
+
+          return response;
+        })
     },
 
     fetchAccount() {
