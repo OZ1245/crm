@@ -2,6 +2,7 @@ export default {
   tabs: {
     general: 'Общее',
     users: 'Пользователи',
+    account: 'Профиль',
   },
   users: {
     tableColumns: {

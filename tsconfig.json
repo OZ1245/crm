@@ -6,7 +6,8 @@
       "@/*": ["./src/*"],
       // "api/*": ["/api/*"]
       "root/*": ["./*"],
-      "stores/*": ["./src/stores/*"]
+      "stores/*": ["./src/stores/*"],
+      "types/*": ["./src/types/*"]
     }
   },
   "noImplicitAny": true,

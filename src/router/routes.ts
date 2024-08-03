@@ -10,8 +10,28 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/IndexPage.vue')
       },
       {
-        path: '/register',
-        component: () => import('pages/auth/CRegister.vue')
+        path: '/auth',
+        component: () => import('pages/auth/CIndexPage.vue'),
+        children: [
+          {
+            path: 'register',
+            component: () => import('pages/auth/CRegister.vue')
+          },
+          {
+            path: 'login',
+            component: () => import('pages/auth/CLoginPage.vue')
+          }
+        ]
+      },
+      {
+        path: '/account',
+        component: () => import('pages/account/CAccountPage.vue'),
+        children: [
+          {
+            path: 'general',
+            component: () => import('pages/account/CGeneralInfoPage.vue'),
+          }
+        ]
       },
       {
         path: '/settings',

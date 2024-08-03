@@ -21,8 +21,9 @@
       show-if-above
       bordered
       :mini="drawerIsOpen"
+      class="sidebar flex"
     >
-      <q-list>
+      <q-list class="sidebar__list">
         <q-item-label header>
           Essential Links
         </q-item-label>
@@ -33,10 +34,21 @@
           v-bind="link"
         />
       </q-list>
+
+      <q-list class="sidebar__list self-end">
+        <essential-link
+          :title="$t('layouts.main.essentialLinks.account.title')"
+          icon="account_circle"
+          link="/account/general"
+        >
+        </essential-link>
+      </q-list>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <q-page padding>
+        <router-view />
+      </q-page>
     </q-page-container>
   </q-layout>
 </template>
@@ -66,3 +78,12 @@ function toggleLeftDrawer() {
   drawerIsOpen.value = !drawerIsOpen.value
 }
 </script>
+
+<style
+  lang="scss"
+  scoped
+>
+.sidebar__list {
+  width: 100%;
+}
+</style>

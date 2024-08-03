@@ -2,6 +2,7 @@ export default {
   tabs: {
     general: 'General',
     users: 'Users',
+    account: 'Account',
   },
   users: {
     tableColumns: {

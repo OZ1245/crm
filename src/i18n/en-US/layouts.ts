@@ -4,6 +4,9 @@ export default {
       settings: {
         title: 'Settings',
         caption: 'Application settings'
+      },
+      account: {
+        title: 'Account',
       }
     }
   }
