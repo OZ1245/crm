@@ -12,13 +12,15 @@ export default {
       registrationDate: 'Registration date',
       status: 'Status',
       newPassword: 'New password',
-      currentPassword: 'Current password'
+      currentPassword: 'Current password',
+      deleteAccount: 'Delete account'
     },
     buttons: {
       changePassword: 'Update password',
       updatePassword: 'Update password',
       cancel: 'Cancel',
-      logout: 'Log out'
+      logout: 'Log out',
+      delete: 'Delete'
     },
     messages: {
       nameError: 'Error updating name',
@@ -35,7 +37,10 @@ export default {
       logoutDialogTitle: 'Log out',
       logoutText: 'Are you sure you want to log out of your account?',
       logoutError: 'Error when logging out of profile',
-      accountDataError: 'Error while retrieving account information'
+      accountDataError: 'Error while retrieving account information',
+      deleteAccountText: 'Are you sure you want to permanently delete your account?',
+      deleteAccountError: 'An error occurred when deleting your account: {0}',
+      deleteAccountSuccess: 'Account has been deleted',
     }
   },
 }

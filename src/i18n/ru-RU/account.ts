@@ -12,13 +12,15 @@ export default {
       registrationDate: 'Дата регистрации',
       status: 'Статус',
       newPassword: 'Новый пароль',
-      currentPassword: 'Текущий пароль'
+      currentPassword: 'Текущий пароль',
+      deleteAccount: 'Удалить профиль'
     },
     buttons: {
       changePassword: 'Изменить пароль',
       updatePassword: 'Обновить пароль',
       cancel: 'Отмена',
-      logout: 'Выйти из профиля'
+      logout: 'Выйти из профиля',
+      delete: 'Удалить'
     },
     messages: {
       nameError: 'Ошибка при обновлении имени',
@@ -35,7 +37,10 @@ export default {
       logoutDialogTitle: 'Выход',
       logoutText: 'Вы уверены, что хотите выйти из профиля?',
       logoutError: 'Ошибка при выходе из профиля',
-      accountDataError: 'Ошибка при получение данных профиля'
+      accountDataError: 'Ошибка при получение данных профиля',
+      deleteAccountText: 'Вы уверены, что хотите удалить свой профиль безвозвратно?',
+      deleteAccountError: 'При удалении профиля произошла ошибка: {0}',
+      deleteAccountSuccess: 'Профиль удалён',
     }
   },
 }

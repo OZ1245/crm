@@ -1,123 +1,155 @@
 <template>
-  <div class="row">
-    <div class="col">
-      <q-list separator>
-        <q-item>
-          <q-item-section>
-            <template v-if="!showNameInput">
-              <q-item-label caption>{{ $t('account.general.labels.name') }}</q-item-label>
-              <q-item-label>{{ account.name }}</q-item-label>
-            </template>
-            <q-input
-              v-else
-              ref="accountNameInput"
-              v-model="form.name"
-              :label="$t('account.general.labels.name')"
-            ></q-input>
-          </q-item-section>
-          <q-item-section side>
-            <q-btn
-              v-if="!showNameInput"
-              flat
-              icon="edit"
-              @click="handleToggleNameInput"
-            ></q-btn>
-            <q-btn-group v-else>
+  <q-inner-loading :showing="isLoading"></q-inner-loading>
+
+  <template v-if="account">
+    <div class="row">
+      <div class="col">
+        <q-list separator>
+          <q-item>
+            <q-item-section>
+              <template v-if="!showNameInput">
+                <q-item-label caption>{{ $t('account.general.labels.name') }}</q-item-label>
+                <q-item-label>{{ account.name }}</q-item-label>
+              </template>
+              <q-input
+                v-else
+                ref="accountNameInput"
+                v-model="form.name"
+                :label="$t('account.general.labels.name')"
+              ></q-input>
+            </q-item-section>
+            <q-item-section side>
               <q-btn
+                v-if="!showNameInput"
                 flat
-                icon="done"
-                color="primary"
-                @click="handleUpdateName"
-              ></q-btn>
-              <q-btn
-                flat
-                icon="close"
+                icon="edit"
                 @click="handleToggleNameInput"
               ></q-btn>
-            </q-btn-group>
-          </q-item-section>
-        </q-item>
-        <q-item>
-          <q-item-section>
-            <template v-if="!showEmailInput">
-              <q-item-label caption>{{ $t('account.general.labels.email') }}</q-item-label>
-              <q-item-label>{{ account.email }}</q-item-label>
-            </template>
-            <q-input
-              v-else
-              ref="accountEmailInput"
-              v-model="form.email"
-              :label="$t('account.general.labels.email')"
-            ></q-input>
-          </q-item-section>
-          <q-chip
-            v-if="!account.emailVerification"
-            icon="warning"
-            color="warning"
-            text-color="black"
-            :label="$t('account.general.messages.emailVerificationWarning')"
-          >
-            <q-tooltip>{{ $t('account.general.messages.contactToAdmin') }}</q-tooltip>
-          </q-chip>
-          <q-item-section side>
-            <q-btn
-              v-if="!showEmailInput"
-              flat
-              icon="edit"
-              :disable="!account.emailVerification"
-              @click="handleToggleEmailInput"
-            ></q-btn>
-            <q-btn-group v-else>
+              <q-btn-group v-else>
+                <q-btn
+                  flat
+                  icon="done"
+                  color="primary"
+                  @click="handleUpdateName"
+                ></q-btn>
+                <q-btn
+                  flat
+                  icon="close"
+                  @click="handleToggleNameInput"
+                ></q-btn>
+              </q-btn-group>
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-item-section>
+              <template v-if="!showEmailInput">
+                <q-item-label caption>{{ $t('account.general.labels.email') }}</q-item-label>
+                <q-item-label>{{ account.email }}</q-item-label>
+              </template>
+              <q-input
+                v-else
+                ref="accountEmailInput"
+                v-model="form.email"
+                :label="$t('account.general.labels.email')"
+              ></q-input>
+            </q-item-section>
+            <q-chip
+              v-if="!account.emailVerification"
+              icon="warning"
+              color="warning"
+              text-color="black"
+              :label="$t('account.general.messages.emailVerificationWarning')"
+            >
+              <q-tooltip>{{ $t('account.general.messages.contactToAdmin') }}</q-tooltip>
+            </q-chip>
+            <q-item-section side>
               <q-btn
+                v-if="!showEmailInput"
                 flat
-                icon="done"
-                color="primary"
-                @click="handleUpdateEmail"
-              ></q-btn>
-              <q-btn
-                flat
-                icon="close"
+                icon="edit"
+                :disable="!account.emailVerification"
                 @click="handleToggleEmailInput"
               ></q-btn>
-            </q-btn-group>
-          </q-item-section>
-        </q-item>
-        <q-item>
-          <q-item-section>
-            <q-item-label caption>{{ $t('account.general.labels.registrationDate') }}</q-item-label>
-            <q-item-label>{{ account.registration }}</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item>
-          <q-btn
-            color="primary"
-            @click="handleToggleUpdatePasswordDialog"
-          >{{ $t('account.general.buttons.changePassword') }}</q-btn>
-        </q-item>
-      </q-list>
+              <q-btn-group v-else>
+                <q-btn
+                  flat
+                  icon="done"
+                  color="primary"
+                  @click="handleUpdateEmail"
+                ></q-btn>
+                <q-btn
+                  flat
+                  icon="close"
+                  @click="handleToggleEmailInput"
+                ></q-btn>
+              </q-btn-group>
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-item-section>
+              <q-item-label caption>{{ $t('account.general.labels.registrationDate') }}</q-item-label>
+              <q-item-label>{{ account.registration }}</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-btn
+              color="primary"
+              @click="handleToggleUpdatePasswordDialog"
+            >{{ $t('account.general.buttons.changePassword') }}</q-btn>
+          </q-item>
+        </q-list>
+      </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col">
-      <q-list border>
-        <q-expansion-item :label="$t('account.detailGeneralInfo')">
-          <pre>{{ account }}</pre>
-        </q-expansion-item>
-      </q-list>
+    <div class="row">
+      <div class="col">
+        <q-list bordered>
+          <q-expansion-item :label="$t('account.detailGeneralInfo')">
+            <pre>{{ account }}</pre>
+          </q-expansion-item>
+        </q-list>
+      </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col">
-      <q-btn
-        flat
-        color="negative"
-        @click="handleLogout"
-      >{{ $t('account.general.buttons.logout') }}</q-btn>
+    <div class="row">
+      <div class="col">
+        <q-btn
+          flat
+          color="negative"
+          @click="handleLogout"
+        >{{ $t('account.general.buttons.logout') }}</q-btn>
+      </div>
     </div>
-  </div>
 
+    <div class="row">
+      <div class="col">
+        <q-list bordered>
+          <q-expansion-item :label="$t('account.general.labels.deleteAccount')">
+            <div class="row">
+              <div class="col flex justify-center q-pa-md">
+                <q-btn
+                  color="negative"
+                  :label="$t('account.general.buttons.delete')"
+                  @click="handleDeleteAccount"
+                ></q-btn>
+              </div>
+            </div>
+          </q-expansion-item>
+        </q-list>
+      </div>
+    </div>
+  </template>
+
+  <template v-else>
+    <q-banner>
+      <template #avatar>
+        <q-icon name="error"></q-icon>
+      </template>
+      {{ $t('account.general.messages.accountDataError') }}
+    </q-banner>
+  </template>
+
+  <!-- Обновление пароля -->
   <q-dialog v-model="showUpdatePasswordDialog">
     <q-card class="general-info__password-dialog">
       <q-card-section>
@@ -178,6 +210,7 @@ const $q = useQuasar();
 const { t } = useI18n();
 const router = useRouter();
 
+const isLoading = ref<boolean>(true);
 const showNameInput = ref<boolean>(false);
 const showEmailInput = ref<boolean>(false);
 const showUpdatePasswordDialog = ref<boolean>(false);
@@ -201,8 +234,10 @@ const fetchAccountData = async (): Promise<void> => {
   try {
     await accountStore.fetchAccount();
     $q.loading.hide();
+    isLoading.value = false;
   } catch (error) {
     $q.loading.hide();
+    isLoading.value = false;
     $q.notify({
       icon: 'cancel',
       type: 'negative',
@@ -297,12 +332,35 @@ const logout = async (): Promise<void> => {
   try {
     await accountStore.logout();
     router.push('/');
+    $q.loading.hide();
   } catch (error) {
     $q.loading.hide();
     $q.notify({
       icon: 'cancel',
       type: 'negative',
       message: `${t('account.general.messages.logoutError')}: ${error}`
+    });
+  }
+}
+
+const deleteAccount = async (): Promise<void> => {
+  $q.loading.show();
+
+  try {
+    await accountStore.updateStatus();
+    $q.loading.hide();
+    $q.notify({
+      icon: 'check_circle',
+      type: 'positive',
+      message: t('account.general.messages.deleteAccountSuccess')
+    });
+    router.push('/');
+  } catch (error) {
+    $q.loading.hide();
+    $q.notify({
+      icon: 'cancel',
+      type: 'negative',
+      message: t('account.general.messages.deleteAccountError', [error])
     });
   }
 }
@@ -385,6 +443,18 @@ const handleLogout = (): void => {
   })
     .onOk(() => {
       logout();
+    });
+}
+
+const handleDeleteAccount = (): void => {
+  $q.dialog({
+    title: t('account.general.labels.deleteAccount'),
+    message: t('account.general.messages.deleteAccountText'),
+    cancel: true,
+    persistent: true,
+  })
+    .onOk(() => {
+      deleteAccount();
     });
 }
 

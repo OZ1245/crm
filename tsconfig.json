@@ -7,7 +7,8 @@
       // "api/*": ["/api/*"]
       "root/*": ["./*"],
       "stores/*": ["./src/stores/*"],
-      "types/*": ["./src/types/*"]
+      "types/*": ["./src/types/*"],
+      "composables/*": ["./src/composables/*"]
     }
   },
   "noImplicitAny": true,

@@ -89,6 +89,7 @@ module.exports = configure(function (ctx) {
           '@': path.resolve(__dirname, './src'),
           // api: path.resolve(__dirname, './api'),
           root: path.resolve(__dirname, './'),
+          composables: path.resolve(__dirname, './src/composables')
         }
       },
 

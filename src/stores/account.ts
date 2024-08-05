@@ -32,7 +32,12 @@ export const useAccountStore = defineStore('account', {
 
   actions: {
     register(credintales: ICredintales) {
-      return accountApi.register(credintales);
+      return accountApi.register(credintales)
+        .then((response) => {
+          this.login(credintales);
+
+          return response;
+        });
     },
 
     login(credintales: ICredintales) {
@@ -49,6 +54,33 @@ export const useAccountStore = defineStore('account', {
       const accountSession = this.getAccountSession;
 
       return accountApi.logout(accountSession.$id)
+        .then((response) => {
+          this.account = null;
+          this.session = null;
+
+          localStorage.removeItem('account');
+          localStorage.removeItem('accountSession');
+
+          return response;
+        })
+    },
+
+    logoutAll() {
+      return accountApi.logoutAll()
+        .then((response) => {
+          this.account = null;
+          this.session = null;
+
+          localStorage.removeItem('account');
+          localStorage.removeItem('accountSession');
+
+          return response;
+        })
+    },
+
+    // Блокировка пользователя (удаление)
+    updateStatus() {
+      return accountApi.updateStatus()
         .then((response) => {
           this.account = null;
           this.session = null;
