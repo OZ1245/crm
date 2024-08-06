@@ -22,8 +22,8 @@
         </q-tabs>
       </div>
     </div>
-    <div class="row">
-      <div class="col">
+    <div class="row q-mt-md">
+      <div class="col q-gutter-md">
         <router-view></router-view>
       </div>
     </div>
@@ -49,7 +49,12 @@ const tabs = [
     name: 'general',
     label: t('account.tabs.general'),
     to: '/account/general'
-  }
+  },
+  {
+    name: 'sessions',
+    label: t('account.tabs.sessions'),
+    to: '/account/sessions'
+  },
 ];
 
 const tab = ref<string>('general');

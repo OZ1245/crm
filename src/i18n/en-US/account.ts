@@ -3,7 +3,8 @@ export default {
   detailGeneralInfo: 'Detail info',
   tabs: {
     general: 'General',
-    settings: 'Settings'
+    settings: 'Settings',
+    sessions: 'Sessions',
   },
   general: {
     labels: {
@@ -43,4 +44,32 @@ export default {
       deleteAccountSuccess: 'Account has been deleted',
     }
   },
+  sessions: {
+    labels: {
+      detailInfo: 'Detail info',
+      ip: 'IP address',
+      countryName: 'Country',
+      osName: 'Operating system',
+      clientName: 'Client name',
+      clientVersion: 'Client version',
+      deviceName: 'Device',
+      desktop: 'PC',
+      mobile: 'Mobile phone',
+      deviceBrand: 'Device brand',
+      deviceModel: 'Device model',
+      current: 'Current session'
+    },
+    messages: {
+      dataError: 'Error getting session list: {0}',
+      confirmLogoutAll: 'Are you sure you want to log out of all sessions?',
+      logoutAllError: 'Error when logging out of sessions:',
+      confirmLogoutCurrent: 'This is your current session. Are you sure you want to go out?',
+      confirmLogout: 'Are you sure you want to log out of this session?',
+      logoutError: 'Error when logging out of session: {0}',
+    },
+    buttons: {
+      logoutAll: 'Log out from all sessions',
+      logout: 'Log out'
+    }
+  }
 }

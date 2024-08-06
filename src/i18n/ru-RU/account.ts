@@ -3,7 +3,8 @@ export default {
   detailGeneralInfo: 'Детальная информация',
   tabs: {
     general: 'Общее',
-    settings: 'Настройки'
+    settings: 'Настройки',
+    sessions: 'Сессии',
   },
   general: {
     labels: {
@@ -43,4 +44,32 @@ export default {
       deleteAccountSuccess: 'Профиль удалён',
     }
   },
+  sessions: {
+    labels: {
+      detailInfo: 'Детальная информация',
+      ip: 'IP адрес',
+      countryName: 'Страна',
+      osName: 'Операционная система',
+      clientName: 'Название клиента',
+      clientVersion: 'Версия клиента',
+      deviceName: 'Устройство',
+      desktop: 'ПК',
+      mobile: 'Телефон',
+      deviceBrand: 'Бренд устройства',
+      deviceModel: 'Модель устройства',
+      current: 'Текущая сессия'
+    },
+    messages: {
+      dataError: 'Ошибка получения списка сессий: {0}',
+      confirmLogoutAll: 'Вы уверены, что хотите выйти из всех сессий?',
+      logoutAllError: 'Ошибка при выходе из сессий:',
+      confirmLogoutCurrent: 'Это ваша текущая сессия. Вы уверены, что хотите выйти?',
+      confirmLogout: 'Вы уверены, что хотите выйти из данной сессии?',
+      logoutError: 'Ошибка при выходе из сессии: {0}',
+    },
+    buttons: {
+      logoutAll: 'Выйти со всех сессий',
+      logout: 'Выйти'
+    }
+  }
 }

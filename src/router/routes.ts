@@ -26,12 +26,16 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: '/account',
-        component: () => import('pages/account/CAccountPage.vue'),
+        component: () => import('layouts/CAccountPageLayout.vue'),
         children: [
           {
             path: 'general',
             component: () => import('pages/account/CGeneralInfoPage.vue'),
-          }
+          },
+          {
+            path: 'sessions',
+            component: () => import('pages/account/CSessionsPage.vue'),
+          },
         ]
       },
       {

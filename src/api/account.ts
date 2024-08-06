@@ -57,7 +57,7 @@ const logoutAll = async (): Promise<any> => {
  * Аккаунт не удаляется, а закрывается возможность в него зайти.
  * Удаление аккаунта можно воспроизвести в User API с помощью библиотеки SDK.
  *
- * @returns {Promise<User>}
+ * @returns {Promise<User>} Данные пользователя
  */
 const updateStatus = async (): Promise<Models.User<Models.Preferences>> => {
   return await account.updateStatus();
@@ -70,6 +70,15 @@ const updateStatus = async (): Promise<Models.User<Models.Preferences>> => {
  */
 const fetchAccount = async (): Promise<Models.User<Models.Preferences>> => {
   return await account.get();
+}
+
+/**
+ * Получить список всех активных сессий.
+ *
+ * @returns {Promise<SessionList>}  Список сессий пользователя
+ */
+const fetchSessions = async (): Promise<Models.SessionList> => {
+  return await account.listSessions();
 }
 
 /**
@@ -120,5 +129,6 @@ export default {
   fetchAccount,
   updateName,
   updateEmail,
-  updatePassword
+  updatePassword,
+  fetchSessions
 }

@@ -5,13 +5,15 @@ import type { Models } from 'appwrite'
 
 interface IState {
   account: Models.User<Models.Preferences> | null;
-  session: Models.Session | null
+  session: Models.Session | null;
+  sessionList: Models.SessionList | null;
 }
 
 export const useAccountStore = defineStore('account', {
   state: (): IState => ({
     account: null,
-    session: null
+    session: null,
+    sessionList: null
   }),
 
   getters: {
@@ -78,6 +80,17 @@ export const useAccountStore = defineStore('account', {
         })
     },
 
+    logoutSession(sessionId: Models.Session['$id']) {
+      const accountSession = this.getAccountSession;
+
+      if (sessionId === accountSession.$id) {
+        return this.logout();
+      }
+
+      return accountApi.logout(sessionId)
+        .then((response) => response);
+    },
+
     // Блокировка пользователя (удаление)
     updateStatus() {
       return accountApi.updateStatus()
@@ -97,6 +110,15 @@ export const useAccountStore = defineStore('account', {
         .then((response) => {
           this.account = response;
           localStorage.setItem('account', JSON.stringify(response));
+
+          return response;
+        });
+    },
+
+    fetchSessions() {
+      return accountApi.fetchSessions()
+        .then((response) => {
+          this.sessionList = response;
 
           return response;
         });
