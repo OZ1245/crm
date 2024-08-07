@@ -6,6 +6,18 @@ export default {
     settings: 'Настройки',
     sessions: 'Сессии',
   },
+  labels: {
+    changeAvatar: 'Поменять фото профиля'
+  },
+  messages: {
+    getAccountPhotoError: 'Ошибка получения фото профиля: {0}',
+    uploadAccountPhotoError: 'Ошибка загрузки фото профиля: {0}'
+  },
+  buttons: {
+    cancel: 'Отмена',
+    apply: 'Применить',
+    uploadDevice: 'Загрузить с устройства'
+  },
   general: {
     labels: {
       name: 'Имя',
@@ -14,7 +26,7 @@ export default {
       status: 'Статус',
       newPassword: 'Новый пароль',
       currentPassword: 'Текущий пароль',
-      deleteAccount: 'Удалить профиль'
+      deleteAccount: 'Удалить профиль',
     },
     buttons: {
       changePassword: 'Изменить пароль',

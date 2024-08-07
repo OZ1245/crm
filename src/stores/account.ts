@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import accountApi from '@/api/account';
+import storageApi from '@/api/storage';
 import { ICredintales, ICredintalesPassword } from '@/types/api/account';
 import type { Models } from 'appwrite'
 
@@ -7,13 +8,17 @@ interface IState {
   account: Models.User<Models.Preferences> | null;
   session: Models.Session | null;
   sessionList: Models.SessionList | null;
+  accountPhoto: URL | null;
 }
+
+type SizeOption = 'small' | 'middle' | 'big';
 
 export const useAccountStore = defineStore('account', {
   state: (): IState => ({
     account: null,
     session: null,
-    sessionList: null
+    sessionList: null,
+    accountPhoto: null,
   }),
 
   getters: {
@@ -149,6 +154,77 @@ export const useAccountStore = defineStore('account', {
         .then((response) => {
           this.account = response;
           localStorage.setItem('account', JSON.stringify(response));
+
+          return response;
+        });
+    },
+
+    uploadAccountPhoto(file: File) {
+      return storageApi.createFile({
+        bucketId: '66b3303c0036c8b173e3',
+        file
+      })
+        .then(async (response) => {
+          await accountApi.updatePreferences({
+            accountPhoto: response.$id
+          });
+
+          return response;
+        });
+    },
+
+    fetchAccountPhoto(size = 'middle' as SizeOption) {
+      console.log('this.getAccount :>> ', this.getAccount);
+      const fileId = this.getAccount.prefs.accountPhoto || null;
+      let width = 250;
+      let height = 250;
+
+      if (!fileId) return null;
+
+      switch (size) {
+        case 'small': {
+          width = 60;
+          height = 60;
+          break;
+        }
+        case 'big': {
+          width = 1024;
+          height = 1024;
+          break;
+        }
+      }
+
+      return storageApi.fetchFilePreview({
+        bucketId: '66b3303c0036c8b173e3',
+        fileId,
+        width,
+        height
+      })
+        .then((response) => {
+          console.log('response :>> ', response);
+
+          this.accountPhoto = response;
+
+          return response;
+        });
+    },
+
+    deleteAccountPhoto() {
+      const fileId = this.account?.prefs.accountPhoto || null;
+
+      if (!fileId) return;
+
+      return storageApi.deleteFile({
+        bucketId: '66b3303c0036c8b173e3',
+        fileId
+      })
+        .then(async (response) => {
+          await accountApi.updatePreferences({
+            accountPhoto: null
+          })
+            .then(() => {
+              this.accountPhoto = null;
+            });
 
           return response;
         });

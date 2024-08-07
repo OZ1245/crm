@@ -6,6 +6,18 @@ export default {
     settings: 'Settings',
     sessions: 'Sessions',
   },
+  labels: {
+    changeAvatar: 'Change account photo'
+  },
+  messages: {
+    getAccountPhotoError: 'Error getting account photo: {0}',
+    uploadAccountPhotoError: 'Error uploading account photo: {0}'
+  },
+  buttons: {
+    cancel: 'Cancel',
+    apply: 'Apply',
+    uploadDevice: 'Upload from device'
+  },
   general: {
     labels: {
       name: 'Name',
@@ -14,7 +26,7 @@ export default {
       status: 'Status',
       newPassword: 'New password',
       currentPassword: 'Current password',
-      deleteAccount: 'Delete account'
+      deleteAccount: 'Delete account',
     },
     buttons: {
       changePassword: 'Update password',

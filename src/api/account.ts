@@ -10,7 +10,7 @@ const account = new Account(client);
  * @param   {string}        email     Email
  * @param   {string}        password  Пароль
  *
- * @return  {Promise<User>}                    Данные пользователя
+ * @return  {Promise<User>}           Данные пользователя
  */
 const register = async ({ email, password }: ICredintales): Promise<Models.User<Models.Preferences>> => {
   return await account.create(
@@ -26,7 +26,7 @@ const register = async ({ email, password }: ICredintales): Promise<Models.User<
  * @param   {string}        email       Email
  * @param   {string}        password    Пароль
  *
- * @returns {Promise<Session>}                   Данные сессии
+ * @returns {Promise<Session>}          Данные сессии
  */
 const login = async ({ email, password }: ICredintales): Promise<Models.Session> => {
   return await account.createEmailPasswordSession(email, password);
@@ -120,6 +120,17 @@ const updatePassword = async ({ password, oldPassword }: ICredintalesPassword): 
   );
 }
 
+/**
+ * Обновление свойств (настроек) пользователя
+ *
+ * @param {Preferences} preferences Набор свойств
+ *
+ * @returns {Promise<User>}         Данные пользователя
+ */
+const updatePreferences = async (preferences: Models.Preferences): Promise<Models.User<Models.Preferences>> => {
+  return await account.updatePrefs(preferences);
+}
+
 export default {
   register,
   login,
@@ -130,5 +141,6 @@ export default {
   updateName,
   updateEmail,
   updatePassword,
-  fetchSessions
+  fetchSessions,
+  updatePreferences
 }
