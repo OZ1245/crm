@@ -174,7 +174,6 @@ export const useAccountStore = defineStore('account', {
     },
 
     fetchAccountPhoto(size = 'middle' as SizeOption) {
-      console.log('this.getAccount :>> ', this.getAccount);
       const fileId = this.getAccount.prefs.accountPhoto || null;
       let width = 250;
       let height = 250;
@@ -201,8 +200,6 @@ export const useAccountStore = defineStore('account', {
         height
       })
         .then((response) => {
-          console.log('response :>> ', response);
-
           this.accountPhoto = response;
 
           return response;

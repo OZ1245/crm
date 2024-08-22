@@ -3,7 +3,10 @@
     <div class="row">
       <div class="col q-gutter-md">
         <h1 class="text-h2 text-center">
-          <div class="account__photo" @click="handleToggleAccountPhotoDialog">
+          <div
+            class="account__photo"
+            @click="handleToggleAccountPhotoDialog"
+          >
             <q-avatar v-if="accountPhoto">
               <img
                 :src="accountPhoto"
@@ -48,7 +51,12 @@
   >
     <q-card class="account__dialog flex column justify-between">
       <q-card-section class="flex justify-center">
-        <q-img v-if="previewAccountPhoto" width="250px" height="250px" :src="previewAccountPhoto"></q-img>
+        <q-img
+          v-if="previewAccountPhoto"
+          width="250px"
+          height="250px"
+          :src="previewAccountPhoto"
+        ></q-img>
       </q-card-section>
       <q-card-section class="flex justify-center">
         <q-file
@@ -57,7 +65,11 @@
           class="account__upload-photo-field"
           @update:model-value="handleSelectAccountPhoto"
         ></q-file>
-        <q-btn color="primary" :label="$t('account.buttons.uploadDevice')" @click="handleUploadFromDevice"></q-btn>
+        <q-btn
+          color="primary"
+          :label="$t('account.buttons.uploadDevice')"
+          @click="handleUploadFromDevice"
+        ></q-btn>
       </q-card-section>
       <q-card-actions align="between">
         <q-btn
@@ -76,10 +88,7 @@
   </q-dialog>
 </template>
 
-<script
-  lang="ts"
-  setup
->
+<script lang="ts" setup>
 import { ref, computed, reactive } from 'vue';
 
 import { useI18n } from 'vue-i18n';
@@ -139,14 +148,14 @@ const fetchAccountPhoto = async (): Promise<void> => {
 
   try {
     await accountStore.fetchAccountPhoto('small');
-    $q.loading.hide();
   } catch (error) {
-    $q.loading.hide();
     $q.notify({
       icon: 'cancel',
       type: 'negative',
       message: t('account.general.messages.getAccountPhotoError', [error])
     });
+  } finally {
+    $q.loading.hide();
   }
 }
 
@@ -156,16 +165,19 @@ const uploadAccountPhoto = async (): Promise<void> => {
   $q.loading.show();
 
   try {
-    await accountStore.uploadAccountPhoto(form.accountPhoto);
-    $q.loading.hide();
+    await accountStore.uploadAccountPhoto(form.accountPhoto)
+    await accountStore.fetchAccount();
+    fetchAccountPhoto();
+
     showAccountPhotoDialog.value = false;
   } catch (error) {
-    $q.loading.hide();
     $q.notify({
       icon: 'cancel',
       type: 'negative',
       message: t('account.messages.uploadAccountPhotoError', [error])
     });
+  } finally {
+    $q.loading.hide();
   }
 }
 
@@ -183,7 +195,7 @@ const handleSelectAccountPhoto = (value: any): void => {
 }
 
 const handleUploadFromDevice = (): void => {
-  filePickerComponent.value.pickFiles();
+  filePickerComponent.value?.pickFiles();
 }
 
 const handleApplyAccountPhoto = (): void => {
@@ -193,18 +205,17 @@ const handleApplyAccountPhoto = (): void => {
 init();
 </script>
 
-<style
-  lang="scss"
-  scoped
->
+<style lang="scss" scoped>
 .account__dialog {
   width: 500px;
   height: 500px;
 }
+
 .account__photo {
   display: inline-block;
   cursor: pointer;
 }
+
 .account__upload-photo-field {
   display: none;
 }
