@@ -2,7 +2,7 @@
   "tabs": {
     "general": "Общее",
     "users": "Пользователи",
-    "account": "Профиль",
+    "account": "Профиль"
   },
   "users": {
     "tableColumns": {

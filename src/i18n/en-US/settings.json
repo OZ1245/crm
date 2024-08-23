@@ -16,6 +16,5 @@
     "tablePagination": {
       "perPageLabel": "Users per page"
     }
-  },
-  "tabs.account": ""
+  }
 }
