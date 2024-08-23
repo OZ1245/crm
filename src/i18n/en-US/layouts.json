@@ -9,5 +9,8 @@
         "title": "Account"
       }
     }
+  },
+  "buttons": {
+    "closeDrawer": "Close panel"
   }
 }
