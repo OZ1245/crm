@@ -18,7 +18,7 @@
               color="primary"
               icon="account_circle"
             ></q-avatar>
-            <q-tooltip>{{ $t('account.labels.changeAvatar') }}</q-tooltip>
+            <q-tooltip>{{ $t('account.labels.editAvatar') }}</q-tooltip>
           </div>
           {{ computedName }}
         </h1>

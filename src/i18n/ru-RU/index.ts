@@ -1,7 +1,7 @@
-import settings from './settings';
-import layouts from './layouts';
-import auth from './auth';
-import account from './account';
+import settings from './settings.json';
+import layouts from './layouts.json';
+import auth from './auth.json';
+import account from './account.json';
 
 export default {
   settings,
