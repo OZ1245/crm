@@ -174,15 +174,10 @@ export const useAccountStore = defineStore('account', {
     },
 
     fetchAccountPhoto(size = 'middle' as SizeOption) {
-      console.log('--- fetchAccountPhoto action ---');
-      console.log('this.getAccount.prefs.accountPhoto:', this.getAccount.prefs.accountPhoto);
-
       const fileId = this.getAccount.prefs.accountPhoto || null;
       let width = 0;
       let height = 0;
       let saveToStore = false;
-
-      console.log('fileId:', fileId);
 
       if (!fileId) return null;
 
@@ -218,9 +213,6 @@ export const useAccountStore = defineStore('account', {
         height
       })
         .then((response) => {
-          console.log('--- fetchFilePreview callback ---');
-
-          console.log('response:', response);
           if (saveToStore) {
             this.accountPhoto = response;
           }
@@ -230,8 +222,6 @@ export const useAccountStore = defineStore('account', {
     },
 
     deleteAccountPhoto() {
-      console.log('--- deleteAccountPhoto ---');
-
       const fileId = this.account?.prefs.accountPhoto || null;
 
       if (!fileId) return;
