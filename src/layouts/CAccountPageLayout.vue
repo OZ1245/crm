@@ -47,7 +47,7 @@
 
   <q-dialog v-model="showAccountPhotoDialog">
     <q-card class="flex column justify-between">
-      <q-card-section class="text-h6">{{ $t('account.general.labels.editAccountPhotoDialogTitle') }}</q-card-section>
+      <q-card-section class="text-h6">{{ $t('account.labels.editAccountPhotoDialogTitle') }}</q-card-section>
       <q-card-section
         v-if="previewAccountPhoto || middleAccountPhoto"
         class="flex justify-center"
@@ -93,7 +93,7 @@
         <q-btn
           flat
           color="primary"
-          :label="t('account.general.buttons.cancel')"
+          :label="t('account.buttons.cancel')"
           @click="handleToggleAccountPhotoDialog"
         ></q-btn>
         <q-btn
@@ -151,6 +151,11 @@ const tabs = [
     to: '/account/general'
   },
   {
+    name: 'app',
+    label: t('account.tabs.app'),
+    to: '/account/app'
+  },
+  {
     name: 'sessions',
     label: t('account.tabs.sessions'),
     to: '/account/sessions'
@@ -197,7 +202,7 @@ const fetchAccountPhoto = async (): Promise<void> => {
     $q.notify({
       icon: 'cancel',
       type: 'negative',
-      message: t('account.general.messages.getAccountPhotoError', [error])
+      message: t('account.messages.getAccountPhotoError', [error])
     });
   } finally {
     $q.loading.hide();
@@ -205,19 +210,16 @@ const fetchAccountPhoto = async (): Promise<void> => {
 }
 
 const fetchBigAccountPhoto = async (): Promise<void> => {
-  console.log('--- fetchBigAccountPhoto ---');
-
   $q.loading.show();
 
   try {
     const response = await accountStore.fetchAccountPhoto('original');
-    console.log('response', response);
     bigAccountPhoto.value = response?.toString() || '';
   } catch (error) {
     $q.notify({
       icon: 'cancel',
       type: 'negative',
-      message: t('account.general.messages.getAccountPhotoError', [error])
+      message: t('account.messages.getAccountPhotoError', [error])
     });
   } finally {
     $q.loading.hide();
@@ -260,7 +262,7 @@ const removeAccountPhoto = async (): Promise<void> => {
     $q.notify({
       icon: 'cancel',
       type: 'negative',
-      message: t('account.general.messages.deleteAccountPhotoError', [error])
+      message: t('account.messages.deleteAccountPhotoError')
     });
   } finally {
     $q.loading.hide();
@@ -286,7 +288,7 @@ const handleUploadFromDevice = (): void => {
 
 const handleRemoveAccountPhoto = (): void => {
   $q.dialog({
-    title: t('account.general.messages.confirmRemoveAccountPhoto'),
+    title: t('account.messages.confirmRemoveAccountPhoto'),
   }).onOk(() => {
     removeAccountPhoto();
   });
@@ -302,8 +304,6 @@ const handleOpenBigAccountPhoto = (): void => {
 }
 
 const handleCloseBigAccountPhoto = (): void => {
-  console.log('--- handleCloseBigAccountPhoto ---');
-
   showBigAccountPhoto.value = false;
 }
 

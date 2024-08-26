@@ -4,14 +4,18 @@
   "tabs": {
     "general": "General",
     "settings": "Settings",
-    "sessions": "Sessions"
+    "sessions": "Sessions",
+    "app": "Application"
   },
   "labels": {
-    "editAvatar": "Edit profile photo"
+    "editAvatar": "Edit profile photo",
+    "editAccountPhotoDialogTitle": "Editing your profile photo"
   },
   "messages": {
-    "getAccountPhotoError": "Error getting account photo: {0}",
-    "uploadAccountPhotoError": "Error uploading account photo: {0}"
+    "getAccountPhotoError": "Error getting profile photo: {0}",
+    "uploadAccountPhotoError": "Error uploading account photo: {0}",
+    "deleteAccountPhotoError": "Error deleting profile photo",
+    "confirmRemoveAccountPhoto": "Are you sure you want to delete your profile photo?"
   },
   "buttons": {
     "cancel": "Cancel",
@@ -27,8 +31,7 @@
       "status": "Status",
       "newPassword": "New password",
       "currentPassword": "Current password",
-      "deleteAccount": "Delete account",
-      "editAccountPhotoDialogTitle": "Editing your profile photo"
+      "deleteAccount": "Delete account"
     },
     "buttons": {
       "changePassword": "Update password",
@@ -56,7 +59,6 @@
       "deleteAccountText": "Are you sure you want to permanently delete your account?",
       "deleteAccountError": "An error occurred when deleting your account: {0}",
       "deleteAccountSuccess": "Account has been deleted",
-      "getAccountPhotoError": "Failed to get profile photo: {0}",
       "confirmRemoveAccountPhoto": "Are you sure you want to delete your profile photo?",
       "deleteAccountPhotoError": "Error deleting profile photo"
     }

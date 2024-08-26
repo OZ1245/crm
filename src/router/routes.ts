@@ -33,6 +33,10 @@ const routes: RouteRecordRaw[] = [
             component: () => import('pages/account/CGeneralInfoPage.vue'),
           },
           {
+            path: 'app',
+            component: () => import('pages/account/CAppSettingsPage.vue'),
+          },
+          {
             path: 'sessions',
             component: () => import('pages/account/CSessionsPage.vue'),
           },

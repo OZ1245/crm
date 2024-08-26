@@ -1,6 +1,4 @@
 <template>
-  <q-inner-loading :showing="isLoading"></q-inner-loading>
-
   <template v-if="account">
     <div class="row">
       <div class="col">
@@ -95,7 +93,8 @@
             <q-btn
               color="primary"
               @click="handleToggleUpdatePasswordDialog"
-            >{{ $t('account.general.buttons.changePassword') }}</q-btn>
+            >{{ $t('account.general.buttons.changePassword')
+              }}</q-btn>
           </q-item>
         </q-list>
       </div>
@@ -184,10 +183,7 @@
   </q-dialog>
 </template>
 
-<script
-  lang="ts"
-  setup
->
+<script lang="ts" setup>
 import { ref, computed, reactive, nextTick } from 'vue';
 
 import { useQuasar } from 'quasar';
@@ -210,7 +206,6 @@ const $q = useQuasar();
 const { t } = useI18n();
 const router = useRouter();
 
-const isLoading = ref<boolean>(true);
 const showNameInput = ref<boolean>(false);
 const showEmailInput = ref<boolean>(false);
 const showUpdatePasswordDialog = ref<boolean>(false);
@@ -233,16 +228,14 @@ const fetchAccountData = async (): Promise<void> => {
 
   try {
     await accountStore.fetchAccount();
-    $q.loading.hide();
-    isLoading.value = false;
   } catch (error) {
-    $q.loading.hide();
-    isLoading.value = false;
     $q.notify({
       icon: 'cancel',
       type: 'negative',
       message: `${t('account.general.messages.accountDataError')}: ${error}`
     })
+  } finally {
+    $q.loading.hide();
   }
 }
 
@@ -461,10 +454,7 @@ const handleDeleteAccount = (): void => {
 init();
 </script>
 
-<style
-  lang="scss"
-  scoped
->
+<style lang="scss" scoped>
 .general-info__password-dialog {
   min-width: 500px;
 }
