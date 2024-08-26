@@ -11,7 +11,7 @@ interface IState {
   accountPhoto: URL | null;
 }
 
-type SizeOption = 'small' | 'middle' | 'big';
+type SizeOption = 'small' | 'middle' | 'big' | 'original';
 
 export const useAccountStore = defineStore('account', {
   state: (): IState => ({
@@ -174,9 +174,15 @@ export const useAccountStore = defineStore('account', {
     },
 
     fetchAccountPhoto(size = 'middle' as SizeOption) {
+      console.log('--- fetchAccountPhoto action ---');
+      console.log('this.getAccount.prefs.accountPhoto:', this.getAccount.prefs.accountPhoto);
+
       const fileId = this.getAccount.prefs.accountPhoto || null;
-      let width = 250;
-      let height = 250;
+      let width = 0;
+      let height = 0;
+      let saveToStore = false;
+
+      console.log('fileId:', fileId);
 
       if (!fileId) return null;
 
@@ -184,11 +190,23 @@ export const useAccountStore = defineStore('account', {
         case 'small': {
           width = 60;
           height = 60;
+          saveToStore = true;
+          break;
+        }
+        case 'middle': {
+          width = 250;
+          height = 250;
+          saveToStore = false;
           break;
         }
         case 'big': {
           width = 1024;
           height = 1024;
+          saveToStore = false;
+          break;
+        }
+        case 'original': {
+          saveToStore = false;
           break;
         }
       }
@@ -200,13 +218,20 @@ export const useAccountStore = defineStore('account', {
         height
       })
         .then((response) => {
-          this.accountPhoto = response;
+          console.log('--- fetchFilePreview callback ---');
+
+          console.log('response:', response);
+          if (saveToStore) {
+            this.accountPhoto = response;
+          }
 
           return response;
         });
     },
 
     deleteAccountPhoto() {
+      console.log('--- deleteAccountPhoto ---');
+
       const fileId = this.account?.prefs.accountPhoto || null;
 
       if (!fileId) return;

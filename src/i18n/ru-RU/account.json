@@ -16,7 +16,8 @@
   "buttons": {
     "cancel": "Отмена",
     "apply": "Применить",
-    "uploadDevice": "Загрузить с устройства"
+    "uploadDevice": "Загрузить с устройства",
+    "removeAccountPhoto": "Удалить"
   },
   "general": {
     "labels": {
@@ -26,7 +27,8 @@
       "status": "Статус",
       "newPassword": "Новый пароль",
       "currentPassword": "Текущий пароль",
-      "deleteAccount": "Удалить профиль"
+      "deleteAccount": "Удалить профиль",
+      "editAccountPhotoDialogTitle": "Редактирование фото профиля"
     },
     "buttons": {
       "changePassword": "Изменить пароль",
@@ -53,7 +55,10 @@
       "accountDataError": "Ошибка при получение данных профиля",
       "deleteAccountText": "Вы уверены, что хотите удалить свой профиль безвозвратно?",
       "deleteAccountError": "При удалении профиля произошла ошибка: {0}",
-      "deleteAccountSuccess": "Профиль удалён"
+      "deleteAccountSuccess": "Профиль удалён",
+      "getAccountPhotoError": "Не удалось получить фото профиля: {0}",
+      "confirmRemoveAccountPhoto": "Вы уверены, что хотите удалить фото профиля?",
+      "deleteAccountPhotoError": "Ошибка удаления фото профиля"
     }
   },
   "sessions": {

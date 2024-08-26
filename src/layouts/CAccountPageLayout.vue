@@ -45,32 +45,50 @@
     </div>
   </div>
 
-  <q-dialog
-    v-model="showAccountPhotoDialog"
-    :persistent="true"
-  >
-    <q-card class="account__dialog flex column justify-between">
-      <q-card-section class="flex justify-center">
+  <q-dialog v-model="showAccountPhotoDialog">
+    <q-card class="flex column justify-between">
+      <q-card-section class="text-h6">{{ $t('account.general.labels.editAccountPhotoDialogTitle') }}</q-card-section>
+      <q-card-section
+        v-if="previewAccountPhoto || middleAccountPhoto"
+        class="flex justify-center"
+      >
         <q-img
           v-if="previewAccountPhoto"
           width="250px"
           height="250px"
           :src="previewAccountPhoto"
         ></q-img>
+        <q-img
+          v-else-if="middleAccountPhoto"
+          :src="middleAccountPhoto"
+          width="250px"
+          height="250px"
+          class="cursor-pointer"
+          @click="handleOpenBigAccountPhoto"
+        ></q-img>
       </q-card-section>
-      <q-card-section class="flex justify-center">
+      <q-card-section class="account__upload-photo-field">
         <q-file
           ref="filePickerComponent"
           v-model="form.accountPhoto"
-          class="account__upload-photo-field"
           @update:model-value="handleSelectAccountPhoto"
         ></q-file>
+      </q-card-section>
+      <q-card-actions align="around">
+        <q-btn
+          v-if="accountPhoto"
+          color="negative"
+          :label="$t('account.buttons.removeAccountPhoto')"
+          icon="delete"
+          @click="handleRemoveAccountPhoto"
+        ></q-btn>
         <q-btn
           color="primary"
           :label="$t('account.buttons.uploadDevice')"
+          icon="upload"
           @click="handleUploadFromDevice"
         ></q-btn>
-      </q-card-section>
+      </q-card-actions>
       <q-card-actions align="between">
         <q-btn
           flat
@@ -85,6 +103,27 @@
         ></q-btn>
       </q-card-actions>
     </q-card>
+  </q-dialog>
+
+  <q-dialog
+    v-model="showBigAccountPhoto"
+    full-height
+    class="big-image"
+  >
+    <q-img
+      v-if="bigAccountPhoto"
+      :src="bigAccountPhoto"
+      fit="contain"
+      ratio="1"
+    ></q-img>
+    <q-btn
+      icon="close"
+      size="lg"
+      unelevated
+      flat
+      class="fixed cursor-pointer big-image__close-button"
+      @click="handleCloseBigAccountPhoto"
+    ></q-btn>
   </q-dialog>
 </template>
 
@@ -126,6 +165,9 @@ const form = reactive<IForm>({
   accountPhoto: null
 });
 const previewAccountPhoto = ref<string>('');
+const middleAccountPhoto = ref<string>('');
+const showBigAccountPhoto = ref<boolean>(false);
+const bigAccountPhoto = ref<string>('');
 
 const account = computed((): Models.User<Models.Preferences> => (
   accountStore.getAccount
@@ -147,7 +189,30 @@ const fetchAccountPhoto = async (): Promise<void> => {
   $q.loading.show();
 
   try {
-    await accountStore.fetchAccountPhoto('small');
+    const response = await accountStore.fetchAccountPhoto('small');
+    if (!response) return;
+    const middlePhotoResponse = await accountStore.fetchAccountPhoto('middle');
+    middleAccountPhoto.value = middlePhotoResponse?.toString() || '';
+  } catch (error) {
+    $q.notify({
+      icon: 'cancel',
+      type: 'negative',
+      message: t('account.general.messages.getAccountPhotoError', [error])
+    });
+  } finally {
+    $q.loading.hide();
+  }
+}
+
+const fetchBigAccountPhoto = async (): Promise<void> => {
+  console.log('--- fetchBigAccountPhoto ---');
+
+  $q.loading.show();
+
+  try {
+    const response = await accountStore.fetchAccountPhoto('original');
+    console.log('response', response);
+    bigAccountPhoto.value = response?.toString() || '';
   } catch (error) {
     $q.notify({
       icon: 'cancel',
@@ -181,6 +246,27 @@ const uploadAccountPhoto = async (): Promise<void> => {
   }
 }
 
+const removeAccountPhoto = async (): Promise<void> => {
+  if (!accountPhoto.value) return;
+
+  $q.loading.show();
+
+  try {
+    await accountStore.deleteAccountPhoto();
+    await accountStore.fetchAccount();
+    middleAccountPhoto.value = '';
+    bigAccountPhoto.value = '';
+  } catch (error) {
+    $q.notify({
+      icon: 'cancel',
+      type: 'negative',
+      message: t('account.general.messages.deleteAccountPhotoError', [error])
+    });
+  } finally {
+    $q.loading.hide();
+  }
+}
+
 const init = (): void => {
   fetchAccountPhoto();
 }
@@ -198,8 +284,27 @@ const handleUploadFromDevice = (): void => {
   filePickerComponent.value?.pickFiles();
 }
 
+const handleRemoveAccountPhoto = (): void => {
+  $q.dialog({
+    title: t('account.general.messages.confirmRemoveAccountPhoto'),
+  }).onOk(() => {
+    removeAccountPhoto();
+  });
+}
+
 const handleApplyAccountPhoto = (): void => {
   uploadAccountPhoto();
+}
+
+const handleOpenBigAccountPhoto = (): void => {
+  fetchBigAccountPhoto();
+  showBigAccountPhoto.value = true;
+}
+
+const handleCloseBigAccountPhoto = (): void => {
+  console.log('--- handleCloseBigAccountPhoto ---');
+
+  showBigAccountPhoto.value = false;
 }
 
 init();
@@ -218,5 +323,10 @@ init();
 
 .account__upload-photo-field {
   display: none;
+}
+
+.big-image__close-button {
+  top: 0;
+  right: 0;
 }
 </style>

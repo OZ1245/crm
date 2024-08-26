@@ -16,7 +16,8 @@
   "buttons": {
     "cancel": "Cancel",
     "apply": "Apply",
-    "uploadDevice": "Upload from device"
+    "uploadDevice": "Upload from device",
+    "removeAccountPhoto": "Remove"
   },
   "general": {
     "labels": {
@@ -26,7 +27,8 @@
       "status": "Status",
       "newPassword": "New password",
       "currentPassword": "Current password",
-      "deleteAccount": "Delete account"
+      "deleteAccount": "Delete account",
+      "editAccountPhotoDialogTitle": "Editing your profile photo"
     },
     "buttons": {
       "changePassword": "Update password",
@@ -53,7 +55,10 @@
       "accountDataError": "Error while retrieving account information",
       "deleteAccountText": "Are you sure you want to permanently delete your account?",
       "deleteAccountError": "An error occurred when deleting your account: {0}",
-      "deleteAccountSuccess": "Account has been deleted"
+      "deleteAccountSuccess": "Account has been deleted",
+      "getAccountPhotoError": "Failed to get profile photo: {0}",
+      "confirmRemoveAccountPhoto": "Are you sure you want to delete your profile photo?",
+      "deleteAccountPhotoError": "Error deleting profile photo"
     }
   },
   "sessions": {
