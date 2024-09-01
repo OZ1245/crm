@@ -51,8 +51,10 @@
 
       <q-list class="sidebar__list self-end">
         <essential-link
-          :title="$t('layouts.main.essentialLinks.account.title')"
+          :title="accountName"
+          :caption="$t('layouts.main.essentialLinks.account.title')"
           icon="account_circle"
+          :avatar="accountPhoto"
           link="/account/general"
         >
         </essential-link>
@@ -73,6 +75,8 @@ import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import EssentialLink from 'components/EssentialLink.vue';
 import { EssentialLinkProps } from 'types/components/essentialLink';
+import { useAccountStore } from '@/stores/account';
+import { Models } from 'appwrite';
 
 interface IDrawerProps {
   mini?: boolean;
@@ -80,6 +84,7 @@ interface IDrawerProps {
 
 const { t } = useI18n({ useScope: 'global' });
 const $q = useQuasar();
+const accountStore = useAccountStore();
 
 const drawerModelValue = ref<boolean>(false);
 const drawerIsOpen = ref<boolean>(false);
@@ -95,13 +100,27 @@ const essentialLinks = computed<EssentialLinkProps[]>(() => [
   }
 ]);
 
+const account = computed((): Models.User<Models.Preferences> => (
+  accountStore.getAccount
+));
+
+const accountPhoto = computed((): string => (
+  accountStore.avatarSmall?.toString() || ''
+));
+
+const accountName = computed((): string => {
+  if (!account.value?.name?.length) {
+    return t('account.noName');
+  }
+
+  return account.value.name
+})
+
 const isDesktopScreen = computed((): boolean => (
   !$q.screen.lt.md
 ));
 
 const drawerProps = computed((): IDrawerProps => {
-  console.log('isDesktopScreen.value', isDesktopScreen.value);
-
   let mini = isDesktopScreen.value
     ? !drawerIsOpen.value
     : false;

@@ -12,7 +12,13 @@ const { locale } = useI18n();
 
 const accountLanguage = computed((): string => (
   accountStore.getAccountPreferences?.language || ''
-))
+));
 
-locale.value = accountLanguage.value;
+const init = async (): Promise<void> => {
+  locale.value = accountLanguage.value;
+  // await accountStore.fetchAccount();
+  await accountStore.fetchAccountPhoto('small');
+}
+
+init();
 </script>

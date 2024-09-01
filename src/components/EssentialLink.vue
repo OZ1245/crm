@@ -4,7 +4,18 @@
     :to="link"
   >
     <q-item-section
-      v-if="icon"
+      v-if="avatar"
+      avatar
+    >
+      <q-avatar>
+        <img
+          :src="avatar"
+          :alt="caption"
+        >
+      </q-avatar>
+    </q-item-section>
+    <q-item-section
+      v-else-if="icon"
       avatar
     >
       <q-icon :name="icon" />
@@ -24,5 +35,6 @@ withDefaults(defineProps<EssentialLinkProps>(), {
   caption: '',
   link: '#',
   icon: '',
+  avatar: ''
 });
 </script>
