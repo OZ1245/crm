@@ -69,28 +69,31 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import EssentialLink from 'components/EssentialLink.vue';
-import { useQuasar } from 'quasar';
+import { EssentialLinkProps } from 'types/components/essentialLink';
 
 interface IDrawerProps {
   mini?: boolean;
 }
 
-const { t } = useI18n();
+const { t } = useI18n({ useScope: 'global' });
 const $q = useQuasar();
 
-const essentialLinks = [
+const drawerModelValue = ref<boolean>(false);
+const drawerIsOpen = ref<boolean>(false);
+
+// Computed
+
+const essentialLinks = computed<EssentialLinkProps[]>(() => [
   {
     title: t('layouts.main.essentialLinks.settings.title'),
     caption: t('layouts.main.essentialLinks.settings.caption'),
     icon: 'settings',
     link: '/settings'
   }
-];
-
-const drawerModelValue = ref<boolean>(false);
-const drawerIsOpen = ref<boolean>(false);
+]);
 
 const isDesktopScreen = computed((): boolean => (
   !$q.screen.lt.md

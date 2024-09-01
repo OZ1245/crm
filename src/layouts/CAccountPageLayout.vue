@@ -134,17 +134,33 @@ import { useI18n } from 'vue-i18n';
 import { useAccountStore } from 'stores/account';
 import { useQuasar, QFile } from 'quasar';
 
+import { QRouteTabProps } from 'quasar';
+
 import { Models } from 'appwrite';
 
 interface IForm {
   accountPhoto: File | null;
 }
 
-const { t } = useI18n();
+const { t } = useI18n({ useScope: 'global' });
 const accountStore = useAccountStore();
 const $q = useQuasar();
 
-const tabs = [
+const filePickerComponent = ref<QFile | null>(null);
+
+const tab = ref<string>('general');
+const showAccountPhotoDialog = ref<boolean>(false);
+const form = reactive<IForm>({
+  accountPhoto: null
+});
+const previewAccountPhoto = ref<string>('');
+const middleAccountPhoto = ref<string>('');
+const showBigAccountPhoto = ref<boolean>(false);
+const bigAccountPhoto = ref<string>('');
+
+// Computed
+
+const tabs = computed<QRouteTabProps[]>(() => [
   {
     name: 'general',
     label: t('account.tabs.general'),
@@ -160,26 +176,14 @@ const tabs = [
     label: t('account.tabs.sessions'),
     to: '/account/sessions'
   },
-];
-
-const filePickerComponent = ref<QFile | null>(null);
-
-const tab = ref<string>('general');
-const showAccountPhotoDialog = ref<boolean>(false);
-const form = reactive<IForm>({
-  accountPhoto: null
-});
-const previewAccountPhoto = ref<string>('');
-const middleAccountPhoto = ref<string>('');
-const showBigAccountPhoto = ref<boolean>(false);
-const bigAccountPhoto = ref<string>('');
+]);
 
 const account = computed((): Models.User<Models.Preferences> => (
   accountStore.getAccount
 ));
 
 const accountPhoto = computed((): string => (
-  accountStore.accountPhoto?.toString() || ''
+  accountStore.avatarSmall?.toString() || ''
 ));
 
 const computedName = computed((): string => {
@@ -232,9 +236,8 @@ const uploadAccountPhoto = async (): Promise<void> => {
   $q.loading.show();
 
   try {
-    await accountStore.uploadAccountPhoto(form.accountPhoto)
-    await accountStore.fetchAccount();
-    fetchAccountPhoto();
+    await accountStore.uploadAccountPhoto(form.accountPhoto);
+    await accountStore.fetchAccountPhoto('small');
 
     showAccountPhotoDialog.value = false;
   } catch (error) {

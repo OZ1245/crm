@@ -93,5 +93,13 @@
   },
   "account.general.messages.getAccountPhotoError": "Ошибка получения фото профиля: {0}",
   "account.tabs.general": "Общее",
-  "account.tabs.sessions": "Сессии"
+  "account.tabs.sessions": "Сессии",
+  "app": {
+    "labels": {
+      "language": "Язык"
+    },
+    "messages": {
+      "updatePreferencesError": "Ошибка сохранения параметров пользователя: {0}"
+    }
+  }
 }

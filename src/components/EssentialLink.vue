@@ -17,16 +17,9 @@
   </q-item>
 </template>
 
-<script
-  setup
-  lang="ts"
->
-export interface EssentialLinkProps {
-  title: string;
-  caption?: string;
-  link?: string;
-  icon?: string;
-}
+<script setup lang="ts">
+import { EssentialLinkProps } from 'types/components/essentialLink';
+
 withDefaults(defineProps<EssentialLinkProps>(), {
   caption: '',
   link: '#',

@@ -8,17 +8,19 @@ interface IState {
   account: Models.User<Models.Preferences> | null;
   session: Models.Session | null;
   sessionList: Models.SessionList | null;
-  accountPhoto: URL | null;
+  avatarSmall: URL | null;
 }
 
 type SizeOption = 'small' | 'middle' | 'big' | 'original';
+
+const bucketId = '66b3303c0036c8b173e3';
 
 export const useAccountStore = defineStore('account', {
   state: (): IState => ({
     account: null,
     session: null,
     sessionList: null,
-    accountPhoto: null,
+    avatarSmall: null,
   }),
 
   getters: {
@@ -34,6 +36,13 @@ export const useAccountStore = defineStore('account', {
       const parsedAccountSession = json ? JSON.parse(json) : null;
 
       return state.session || parsedAccountSession || null;
+    },
+
+    getAccountPreferences: (state): Models.Preferences => {
+      const json = localStorage.getItem('account');
+      const parsedAccount = json ? JSON.parse(json) : null;
+
+      return state.account?.prefs || parsedAccount?.prefs || {};
     }
   },
 
@@ -159,18 +168,30 @@ export const useAccountStore = defineStore('account', {
         });
     },
 
-    uploadAccountPhoto(file: File) {
-      return storageApi.createFile({
-        bucketId: '66b3303c0036c8b173e3',
-        file
+    updatePreferences(preferences: Models.Preferences) {
+      const accountPrefs = this.getAccountPreferences;
+
+      return accountApi.updatePreferences({
+        ...accountPrefs,
+        ...preferences
       })
-        .then(async (response) => {
-          await accountApi.updatePreferences({
-            accountPhoto: response.$id
-          });
+        .then((response) => {
+          this.account = response;
+          localStorage.setItem('account', JSON.stringify(response));
 
           return response;
         });
+    },
+
+    async uploadAccountPhoto(file: File) {
+      const createFileResponce = await storageApi.createFile({
+        bucketId,
+        file
+      });
+      const updatePrefsResponce = await this.updatePreferences({
+        accountPhoto: createFileResponce.$id
+      });
+      return updatePrefsResponce;
     },
 
     fetchAccountPhoto(size = 'middle' as SizeOption) {
@@ -207,39 +228,34 @@ export const useAccountStore = defineStore('account', {
       }
 
       return storageApi.fetchFilePreview({
-        bucketId: '66b3303c0036c8b173e3',
+        bucketId: bucketId,
         fileId,
         width,
         height
       })
         .then((response) => {
           if (saveToStore) {
-            this.accountPhoto = response;
+            this.avatarSmall = response;
           }
 
           return response;
         });
     },
 
-    deleteAccountPhoto() {
+    async deleteAccountPhoto() {
       const fileId = this.account?.prefs.accountPhoto || null;
 
       if (!fileId) return;
 
-      return storageApi.deleteFile({
-        bucketId: '66b3303c0036c8b173e3',
+      const deleteFileResponce = await storageApi.deleteFile({
+        bucketId,
         fileId
-      })
-        .then(async (response) => {
-          await accountApi.updatePreferences({
-            accountPhoto: null
-          })
-            .then(() => {
-              this.accountPhoto = null;
-            });
-
-          return response;
-        });
+      });
+      await this.updatePreferences({
+        accountPhoto: null
+      });
+      this.avatarSmall = null;
+      return deleteFileResponce;
     }
   }
 });
