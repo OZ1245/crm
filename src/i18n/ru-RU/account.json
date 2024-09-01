@@ -96,7 +96,8 @@
   "account.tabs.sessions": "Сессии",
   "app": {
     "labels": {
-      "language": "Язык"
+      "language": "Язык",
+      "theme": "Темная тема"
     },
     "messages": {
       "updatePreferencesError": "Ошибка сохранения параметров пользователя: {0}"

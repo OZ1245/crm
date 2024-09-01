@@ -94,7 +94,8 @@
   "account.general.messages.getAccountPhotoError": "Error getting profile photo: {0}",
   "app": {
     "labels": {
-      "language": "Language"
+      "language": "Language",
+      "theme": "Dark theme"
     },
     "messages": {
       "updatePreferencesError": "Error saving user parameters: {0}"
