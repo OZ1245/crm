@@ -11,7 +11,10 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
+        <q-toolbar-title
+          class="cursor-pointer"
+          @click="handleTitleClick"
+        >
           <!-- <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
           </q-avatar> -->
@@ -77,6 +80,7 @@ import EssentialLink from 'components/EssentialLink.vue';
 import { EssentialLinkProps } from 'types/components/essentialLink';
 import { useAccountStore } from '@/stores/account';
 import { Models } from 'appwrite';
+import { useRouter } from 'vue-router';
 
 interface IDrawerProps {
   mini?: boolean;
@@ -84,6 +88,7 @@ interface IDrawerProps {
 
 const { t } = useI18n({ useScope: 'global' });
 const $q = useQuasar();
+const router = useRouter();
 const accountStore = useAccountStore();
 
 const drawerModelValue = ref<boolean>(false);
@@ -152,6 +157,10 @@ const toggleLeftDrawer = () => {
     drawerModelValue.value = !drawerModelValue.value;
     drawerIsOpen.value = false;
   }
+}
+
+const handleTitleClick = () => {
+  router.push('/');
 }
 
 onMounted(() => {

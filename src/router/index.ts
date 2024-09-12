@@ -6,6 +6,7 @@ import {
   // createWebHistory,
 } from 'vue-router';
 import routes from './routes';
+import { useAccountStore } from '@/stores/account';
 
 /*
  * If not building with SSR mode, you can
@@ -21,6 +22,7 @@ export default route(function (/* { store, ssrContext } */) {
   //   ? createMemoryHistory
   //   : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
   const createHistory = createWebHashHistory;
+  const accountStore = useAccountStore();
 
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
@@ -34,15 +36,17 @@ export default route(function (/* { store, ssrContext } */) {
     ),
   });
 
-  Router.beforeEach((to, _, next) => {
+  Router.beforeEach(async (to, _, next) => {
+    const account = await accountStore.fetchAccount();
     const accountSessionString = localStorage.getItem('accountSession');
+
+    if (!to.meta?.auth && !(account || accountSessionString)) {
+    // Redirect to login if going to a protected route
+      next('/auth/login');
+    }
 
     if ((to.path === '/auth/login' || to.path === '/auth/register') && accountSessionString) {
       next('/');
-    }
-
-    if (to.meta?.auth && !accountSessionString) {
-      next('/auth/login');
     }
 
     next();
