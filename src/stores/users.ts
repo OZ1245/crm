@@ -14,12 +14,11 @@ export const useUsersStore = defineStore('users', {
   getters: {},
 
   actions: {
-    fetchUsersList() {
-      return fetchUsersList()
-        .then((responce) => {
-          this.usersList = responce;
-          return responce
-        });
+    async fetchUsersList(): Promise<Models.UserList<Models.Preferences>> {
+      const response = await fetchUsersList();
+      this.usersList = response;
+
+      return response;
     }
   }
 });

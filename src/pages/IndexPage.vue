@@ -15,6 +15,7 @@
         <q-btn
           color="primary"
           :label="$t('project.buttons.create')"
+          @click="handleToCreate"
         ></q-btn>
       </div>
 
@@ -36,16 +37,18 @@
 </template>
 
 <script setup lang="ts">
-import { useProjectStore } from '@/stores/project';
-import { IProject } from '@/types/api/project';
-import { Models } from 'appwrite';
-import { useQuasar } from 'quasar';
 import { computed, ref } from 'vue';
+import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+import { useProjectStore } from '@/stores/project';
+import { Models } from 'appwrite';
+import { IProject } from '@/types/api/project';
 
 const projectStore = useProjectStore();
 const $q = useQuasar();
 const { t } = useI18n();
+const router = useRouter();
 
 const projectList = ref<Models.DocumentList<IProject> | null>(null);
 
@@ -71,6 +74,10 @@ const fetchProjects = async (): Promise<void> => {
 
 const init = () => {
   fetchProjects();
+}
+
+const handleToCreate = (): void => {
+  router.push('/project/create');
 }
 
 init();

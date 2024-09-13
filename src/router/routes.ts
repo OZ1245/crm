@@ -25,6 +25,10 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/IndexPage.vue')
       },
       {
+        path: '/project/create', // TODO: Измненить на layout
+        component: () => import('pages/project/CreateProjectView.vue')
+      },
+      {
         path: '/account',
         component: () => import('layouts/CAccountPageLayout.vue'),
         children: [

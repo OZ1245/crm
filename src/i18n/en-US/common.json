@@ -1,0 +1,13 @@
+{
+  "form": {
+    "labels": "Name",
+    "textId": "Identifier",
+    "description": "Description",
+    "author": "Author",
+    "subscribers": "Subscribers",
+    "assigned": "Assigined",
+    "messages": {
+      "emptyValue": "This field is required"
+    }
+  }
+}
