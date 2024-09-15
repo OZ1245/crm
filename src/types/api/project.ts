@@ -1,6 +1,6 @@
 import { Models } from 'appwrite';
 
-export interface IProject extends Models.Document {
+export interface IProject {
   // Заголовок / название
   title: string;
   // Текстовый идентификатор - сокращенное название проекта.
@@ -14,3 +14,5 @@ export interface IProject extends Models.Document {
   // id подписчиков
   subscribes: string[];
 }
+
+export interface IProjectDocument extends IProject, Models.Document {}

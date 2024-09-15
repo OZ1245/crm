@@ -25,8 +25,23 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/IndexPage.vue')
       },
       {
-        path: '/project/create', // TODO: Измненить на layout
-        component: () => import('pages/project/CreateProjectView.vue')
+        path: '/projects',
+        component: () => import('layouts/ProjectLayout.vue'),
+        children: [
+          // {
+          //   path: '',
+          //   component: () => import('pages/project/ProjectListView.vue')
+          // },
+          {
+            path: 'create',
+            component: () => import('pages/project/CreateProjectView.vue'),
+          },
+          {
+            path: '/projects/:projectId',
+            // path: ':projectId',
+            component: () => import('pages/project/ProjectView.vue'),
+          },
+        ]
       },
       {
         path: '/account',

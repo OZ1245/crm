@@ -7,7 +7,7 @@
       >
         <div class="row q-mb-md">
           <div class="col">
-            <q-list>
+            <q-list v-if="models">
               <template
                 v-for="(field, index) in form"
                 :key="index"
@@ -19,6 +19,7 @@
                     v-bind="getFieldProps(field)"
                     lazy-rules
                     class="full-width"
+                    @update:model-value="handleFieldUpdateModelValue(field, $event)"
                   ></component>
                 </q-item>
               </template>
@@ -43,30 +44,38 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
+import { is, useQuasar } from 'quasar';
+
 import { useI18n } from 'vue-i18n';
+import { useProjectStore } from '@/stores/project';
 import { useAccountStore } from '@/stores/account';
 import { useUsersStore } from '@/stores/users';
+import { useRouter } from 'vue-router';
 
 import { Models } from 'node-appwrite';
-import { QSelectOption, useQuasar } from 'quasar';
-import { QCheckbox, QInput, QSelect } from 'quasar';
+import { QCheckbox, QInput, QSelect, QSelectOption } from 'quasar';
 import { IFieldsMap } from 'types/common';
+import { IProject } from '@/types/api/project';
+import { generateTextId } from '@/utils/generateTextId';
 
 interface IField {
   type: keyof IFieldsMap;
   key: string;
-  modelValue: any | any[];
+  value: any;
   label: string;
   options?: QSelectOption[];
   disable?: boolean;
   rules?: any[];
   required?: boolean,
+  handlers?: Record<string, (...args: any) => void>;
 }
 
 const $q = useQuasar();
 const { t } = useI18n();
 const { getAccount } = useAccountStore();
 const userStore = useUsersStore()
+const projectStore = useProjectStore();
+const router = useRouter();
 
 const fieldsMap: IFieldsMap = {
   text: { component: QInput },
@@ -83,15 +92,18 @@ const form = ref<IField[]>([
   {
     type: 'text',
     key: 'title',
-    modelValue: '',
+    value: '',
     label: t('common.form.labels'),
     rules: [rules.empty],
     required: true,
+    handlers: {
+      'update:modelValue': (value: string) => handleTitleInput(value)
+    }
   },
   {
     type: 'text',
     key: 'textId',
-    modelValue: '',
+    value: '',
     label: t('common.form.textId'),
     rules: [rules.empty],
     required: true,
@@ -99,13 +111,13 @@ const form = ref<IField[]>([
   {
     type: 'textarea',
     key: 'description',
-    modelValue: '',
+    value: '',
     label: t('common.form.description'),
   },
   {
     type: 'select',
     key: 'assigned',
-    modelValue: '',
+    value: '',
     label: t('common.form.assigned'),
     options: [],
     rules: [rules.emptyObject],
@@ -114,12 +126,12 @@ const form = ref<IField[]>([
   {
     type: 'select',
     key: 'subscribers',
-    modelValue: [],
+    value: [],
     label: t('common.form.subscribers'),
     options: [],
   }
 ]);
-const models = ref<Record<string, any | any[]>>({});
+const models = ref<Record<string, any> | null>();
 const users = ref<Models.UserList<Models.Preferences> | null>(null);
 
 const accountId = computed<string>(() => (
@@ -130,7 +142,7 @@ const disableSubmiting = computed<boolean>(() => {
   let someEmpty: string[] = [];
 
   form.value.map((field) => {
-    if (field.required && !models.value[field.key]) {
+    if (field.required && (models.value && !models.value[field.key])) {
       someEmpty = [
         ...someEmpty,
         field.key
@@ -143,7 +155,7 @@ const disableSubmiting = computed<boolean>(() => {
   }
 
   return false;
-})
+});
 
 const fillOptions = (): void => {
   const fieldKeys = ['assigned', 'subscribers'];
@@ -164,7 +176,7 @@ const fillModels = (): void => {
   form.value.map((field) => {
     models.value = {
       ...models.value,
-      [field.key]: field.modelValue
+      [field.key]: field.value
     }
   })
 }
@@ -230,19 +242,28 @@ const init = async (): Promise<void> => {
   } catch (error) { }
 }
 
-const handleSubmitForm = (): void => {
-  let payload: Record<string, any> = form.value.reduce((result, { key }) => {
-    let value: string | string[];
+const createProject = async (): Promise<void> => {
+  $q.loading.show();
 
-    if (typeof models.value[key] === 'object') {
-      value = models.value[key].value
+  let payload: Record<string, any> = form.value.reduce<Partial<IProject>>((result, { key }) => {
+    let value: any;
+
+    if (models.value) {
+      if (is.object(models.value[key])) {
+        value = models.value[key].value
+      } else {
+        value = models.value[key]
+      }
+
+      console.log('key', key);
+      console.log('value', value);
+
+      return {
+        ...result,
+        [key]: value || ''
+      }
     } else {
-      value = models.value[key]
-    }
-
-    return {
-      ...result,
-      [key]: value || ''
+      return result;
     }
   }, {});
 
@@ -251,7 +272,38 @@ const handleSubmitForm = (): void => {
     author: accountId.value
   }
 
-  // TODO: ЗАпрос на стоздание
+  console.log('payload', payload);
+
+  try {
+    const response = await projectStore.createProject(payload as IProject);
+    console.log('responce', response);
+    router.push(`/projects/${response.$id}`);
+  } catch (error) {
+    $q.notify({
+      type: 'negative',
+      icon: 'cancel',
+      message: t('project.messages.projectDoesntCreate', [error])
+    });
+  }
+
+  $q.loading.hide();
+}
+
+const handleFieldUpdateModelValue = (field: IField, modelValue?: any): void => {
+  if (!field.handlers) return;
+
+  field.handlers['update:modelValue'](modelValue);
+}
+
+const handleTitleInput = (value: string): void => {
+  const textId = generateTextId(value);
+
+  if (!models.value) return;
+  models.value.textId = textId;
+}
+
+const handleSubmitForm = (): void => {
+  createProject()
 }
 
 init();

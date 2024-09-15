@@ -1,7 +1,8 @@
 {
   "messages": {
     "getProjectsError": "Error getting project list: {0}",
-    "noProjects": "No projects found. \nCreate the first one!"
+    "noProjects": "No projects found. \nCreate the first one!",
+    "projectDoesntCreate": "Error creating project: {0}"
   },
   "buttons": {
     "create": "Create"
