@@ -21,15 +21,17 @@ declare module 'vue-i18n' {
 }
 /* eslint-enable @typescript-eslint/no-empty-interface */
 
-export default boot(({ app }) => {
-  const i18n = createI18n<{ message: MessageSchema }, MessageLanguages>({
-    locale: 'English',
-    fallbackLocale: 'English',
-    legacy: false,
-    globalInjection: true,
-    messages,
-  });
+const i18n = createI18n<{ message: MessageSchema }, MessageLanguages>({
+  locale: 'English',
+  fallbackLocale: 'English',
+  legacy: false,
+  globalInjection: true,
+  messages,
+});
 
+export default boot(({ app }) => {
   // Set i18n instance on app
   app.use(i18n);
 });
+
+export { i18n };

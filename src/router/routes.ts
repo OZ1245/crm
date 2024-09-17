@@ -1,4 +1,7 @@
 import { RouteRecordRaw } from 'vue-router';
+import { i18n } from '@/boot/i18n';
+
+const { t } = i18n.global;
 
 const routes: RouteRecordRaw[] = [
   {
@@ -17,8 +20,9 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/',
+    name: 'Home',
     component: () => import('layouts/MainLayout.vue'),
-    meta: { auth: true },
+    meta: { auth: true, title: t('common.router.titles.home') },
     children: [
       {
         path: '',
@@ -26,20 +30,29 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: '/projects',
+        name: 'Projects',
         component: () => import('layouts/ProjectLayout.vue'),
+        meta: { title: t('common.router.titles.projects') },
         children: [
-          // {
-          //   path: '',
-          //   component: () => import('pages/project/ProjectListView.vue')
-          // },
           {
             path: 'create',
+            name: 'Projects.Create',
             component: () => import('pages/project/CreateProjectView.vue'),
+            meta: { title: t('common.router.titles.createProject') }
           },
           {
-            path: '/projects/:projectId',
-            // path: ':projectId',
+            // path: '/projects/:projectId',
+            path: ':projectId',
+            name: 'Projects.Boards',
             component: () => import('pages/project/ProjectView.vue'),
+            meta: { title: t('common.router.titles.boards') },
+            props: true,
+          },
+          {
+            path: '/projects/:projectId/edit',
+            name: 'Projects.Edit',
+            component: () => import('pages/project/EditProjectView.vue'),
+            meta: { title: t('common.router.titles.edit') }
           },
         ]
       },

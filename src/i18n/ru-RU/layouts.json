@@ -7,6 +7,14 @@
       },
       "account": {
         "title": "Параметры профиля"
+      },
+      "projectBoards": {
+        "title": "Доски",
+        "caption": "Доски канбан проекта"
+      },
+      "editProject": {
+        "title": "Редактировать",
+        "caption": "Изменить проект"
       }
     }
   },

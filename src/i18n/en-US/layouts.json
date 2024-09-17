@@ -7,6 +7,14 @@
       },
       "account": {
         "title": "Profile Options"
+      },
+      "projectBoards": {
+        "title": "Boards",
+        "caption": "Project Kanban boards"
+      },
+      "editProject": {
+        "title": "Edit",
+        "caption": "Change project"
       }
     }
   },

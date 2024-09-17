@@ -9,5 +9,14 @@
     "messages": {
       "emptyValue": "This field is required"
     }
+  },
+  "router": {
+    "titles": {
+      "home": "Home",
+      "createProject": "Create a project",
+      "boards": "Boards",
+      "edit": "Edit project",
+      "projects": "Projects"
+    }
   }
 }

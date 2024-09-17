@@ -4,17 +4,23 @@
 </template>
 
 <script lang="ts" setup>
-import { useProjectStore } from '@/stores/project';
-import { IProjectDocument } from '@/types/api/project';
+import { computed, toRefs } from 'vue';
+
 import { useQuasar } from 'quasar';
-import { computed } from 'vue';
+import { useProjectStore } from '@/stores/project';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+
+import { IProjectDocument } from '@/types/api/project';
 
 const $q = useQuasar();
-const route = useRoute();
 const { t } = useI18n();
 const projectStore = useProjectStore();
+
+const props = defineProps<{
+  projectId: string;
+}>();
+
+const { projectId } = toRefs(props);
 
 const project = computed((): IProjectDocument | null => projectStore.project);
 
@@ -22,7 +28,7 @@ const fetchProject = async (): Promise<void> => {
   $q.loading.show();
 
   try {
-    await projectStore.fetchProject(route.params.projectId);
+    await projectStore.fetchProject(projectId.value);
   } catch (error) {
     $q.notify({
       type: 'negative',
